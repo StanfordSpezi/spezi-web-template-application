@@ -15,9 +15,7 @@ const projectId = 'hrtex-3-dev'
 process.env.FIRESTORE_EMULATOR_HOST = 'localhost:8080'
 process.env.FIREBASE_EMULATOR_HUB = 'localhost:4400'
 process.env.FIREBASE_AUTH_EMULATOR_HOST = 'localhost:9099'
-
-process.env.GOOGLE_APPLICATION_CREDENTIALS =
-  '/Users/madlener/git/spezi-web-template-application/modules/firebase/functions/scripts/serviceAccountKey.json'
+process.env.GOOGLE_APPLICATION_CREDENTIALS = './serviceAccountKey.json'
 
 const app = initializeApp({ projectId })
 
