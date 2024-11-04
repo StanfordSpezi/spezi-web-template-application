@@ -54,7 +54,7 @@ const seedFirestore = async (): Promise<void> => {
       ],
     })
 
-    const medicationClassesRef = db.collection('medicationClasses')
+    const medicationClassesRef = db.collection('medication_classes')
 
     const thiazideClass = await medicationClassesRef.add({
       name: 'Thiazides',
