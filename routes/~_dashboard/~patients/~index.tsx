@@ -15,11 +15,11 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from '@stanfordbdhg/spezi-web-design-system'
+} from '@stanfordspezi/spezi-web-design-system'
 import {
   PatientForm,
   PatientsTable,
-} from '@stanfordbdhg/spezi-web-health-components'
+} from '@stanfordspezi/spezi-web-health-components'
 import { createFileRoute, useNavigate, useRouter } from '@tanstack/react-router'
 import { addDoc, doc, deleteDoc } from 'firebase/firestore'
 import { Contact, UserPlus } from 'lucide-react'
@@ -87,7 +87,7 @@ const PatientsPage = () => {
         onRowClick={async (data: Patient) => {
           await navigate({ to: '/patients/$id', params: { id: data.id ?? '' } })
         }}
-        editRoute={'/patients/'}
+        editRoute={(patientId: string) => `/patients/${patientId}`}
       />
 
       <Dialog open={open} onOpenChange={onOpenChange}>

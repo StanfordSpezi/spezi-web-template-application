@@ -6,22 +6,15 @@
 // SPDX-License-Identifier: MIT
 //
 
-import {
-  PageTitle,
-  DashboardLayout,
-} from '@stanfordbdhg/spezi-web-design-system'
+import { PageTitle } from '@stanfordspezi/spezi-web-design-system'
 import { createFileRoute } from '@tanstack/react-router'
 import { Home } from 'lucide-react'
 import { Helmet } from 'react-helmet'
-import { MenuLinks } from './MenuLinks'
+import { DashboardLayout } from './DashboardLayout'
 
 const DashboardPage = () => {
   return (
-    <DashboardLayout
-      title={<PageTitle title="Home" icon={<Home />} />}
-      aside={<MenuLinks />}
-      mobile={<MenuLinks />}
-    >
+    <DashboardLayout title={<PageTitle title="Home" icon={<Home />} />}>
       <Helmet>
         <title>Home</title>
       </Helmet>

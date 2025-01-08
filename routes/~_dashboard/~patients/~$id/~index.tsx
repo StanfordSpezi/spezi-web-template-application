@@ -14,7 +14,7 @@ import {
   Tabs,
   TabsContent,
   TabsList,
-} from '@stanfordbdhg/spezi-web-design-system'
+} from '@stanfordspezi/spezi-web-design-system'
 import { createFileRoute } from '@tanstack/react-router'
 import { Contact } from 'lucide-react'
 import { Helmet } from 'react-helmet'

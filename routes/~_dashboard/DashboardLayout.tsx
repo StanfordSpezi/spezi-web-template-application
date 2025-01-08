@@ -10,9 +10,9 @@
 import {
   DashboardLayout as DashboardLayoutBase,
   type DashboardLayoutProps as DashboardLayoutPropsBase,
-} from '@stanfordbdhg/spezi-web-design-system'
+} from '@stanfordspezi/spezi-web-design-system'
 import { Link } from '@tanstack/react-router'
-// import { getUserInfo } from "@stanfordbdhg/spezi-web-design-system";
+// import { getUserInfo } from "@stanfordspezi/spezi-web-design-system";
 import { MenuLinks } from '@/routes/~_dashboard/MenuLinks'
 // import { User } from "@/routes/~_dashboard/User";
 

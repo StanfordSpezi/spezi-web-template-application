@@ -14,8 +14,8 @@ import {
   DialogTitle,
   Button,
   DataTable,
-} from '@stanfordbdhg/spezi-web-design-system'
-import { ObservationForm } from '@stanfordbdhg/spezi-web-health-components'
+} from '@stanfordspezi/spezi-web-design-system'
+import { ObservationForm } from '@stanfordspezi/spezi-web-health-components'
 import { useRouter } from '@tanstack/react-router'
 import { createColumnHelper } from '@tanstack/table-core'
 import { addDoc, deleteDoc } from 'firebase/firestore'

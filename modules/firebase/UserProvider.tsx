@@ -6,7 +6,7 @@
 // SPDX-License-Identifier: MIT
 //
 
-import { getUserInfo } from '@stanfordbdhg/spezi-web-design-system'
+import { getUserInfo } from '@stanfordspezi/spezi-web-design-system'
 import { queryOptions, useSuspenseQuery } from '@tanstack/react-query'
 import { getCurrentUser } from '@/modules/firebase/app'
 

@@ -54,7 +54,12 @@ export const getLabsData = async (userId: string) => {
 }
 
 export const getPatientsData = async () => {
+  console.log('getPatientsData')
   const patientRef = refs.patients()
-  const patients = await getDocsData(query(patientRef))
+  console.log(patientRef)
+  const query1 = query(patientRef)
+  console.log(query1)
+  const patients = await getDocsData(refs.patients())
+  console.log(patients)
   return patients
 }

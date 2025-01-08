@@ -6,7 +6,7 @@
 // SPDX-License-Identifier: MIT
 //
 
-import { MenuItem } from '@stanfordbdhg/spezi-web-design-system'
+import { MenuItem } from '@stanfordspezi/spezi-web-design-system'
 import { useLocation } from '@tanstack/react-router'
 import { Contact, Home } from 'lucide-react'
 import { routes } from '@/modules/routes'

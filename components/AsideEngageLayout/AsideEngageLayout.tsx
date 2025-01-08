@@ -9,7 +9,7 @@
 import {
   type AsideBrandLayoutProps,
   AsideBrandLayout,
-} from '@stanfordbdhg/spezi-web-design-system'
+} from '@stanfordspezi/spezi-web-design-system'
 
 export const AsideEngageLayout = (
   props: Omit<AsideBrandLayoutProps, 'aside'>,

@@ -6,12 +6,12 @@
 // SPDX-License-Identifier: MIT
 //
 
+import { SignInForm as AuthSignInForm } from '@stanfordspezi/spezi-web-design-system/modules/auth'
 import { createFileRoute } from '@tanstack/react-router'
 import { signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth'
 import { Helmet } from 'react-helmet'
 import { AsideEngageLayout } from '@/components/AsideEngageLayout'
 import { authProvider, auth } from '@/modules/firebase/app'
-import { SignInForm as AuthSignInForm } from './SignInForm'
 
 const SignIn = () => (
   <AsideEngageLayout>

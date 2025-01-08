@@ -6,14 +6,13 @@
 // SPDX-License-Identifier: MIT
 //
 import '../modules/globals.css'
-import { lightTheme, Toaster } from '@stanfordbdhg/spezi-web-design-system'
+import { lightTheme, Toaster } from '@stanfordspezi/spezi-web-design-system'
+import { SpeziProvider } from '@stanfordspezi/spezi-web-design-system/SpeziProvider'
 import { createRootRoute, Outlet, redirect } from '@tanstack/react-router'
-import { NextIntlClientProvider } from 'next-intl'
 import { useLayoutEffect } from 'react'
 import { Helmet } from 'react-helmet'
 import { auth } from '@/modules/firebase/app'
 import { AuthProvider } from '@/modules/firebase/AuthProvider'
-import messages from '@/modules/messages/translations/en.json'
 import { ReactQueryClientProvider } from '@/modules/query/ReactQueryClientProvider'
 import { routes } from '@/modules/routes'
 
@@ -26,20 +25,16 @@ const Root = () => {
 
   return (
     <AuthProvider>
-      <ReactQueryClientProvider>
-        <NextIntlClientProvider
-          locale="en"
-          timeZone="Europe/Warsaw"
-          messages={messages}
-        >
+      <SpeziProvider>
+        <ReactQueryClientProvider>
           <Helmet
-            defaultTitle="Spezi Web Template"
-            titleTemplate="%s - Spezi Web Template"
+            defaultTitle="Spezi-Web-Template"
+            titleTemplate="%s - Spezi-Web-Template"
           />
           <Outlet />
           <Toaster />
-        </NextIntlClientProvider>
-      </ReactQueryClientProvider>
+        </ReactQueryClientProvider>
+      </SpeziProvider>
     </AuthProvider>
   )
 }
