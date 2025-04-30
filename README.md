@@ -11,7 +11,6 @@ SPDX-License-Identifier: MIT
 # Stanford Biodesign Digital Health Spezi Web Template Application Web Frontend
 
 [![Build and Test](https://github.com/StanfordSpezi/spezi-web-template-application/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/StanfordSpezi/spezi-web-template-application/actions/workflows/build-and-test.yml)
-[![Deployment](https://github.com/StanfordSpezi/spezi-web-template-application/actions/workflows/deployment.yml/badge.svg)](https://github.com/StanfordSpezi/spezi-web-template-application/actions/workflows/deployment.yml)
 [![codecov](https://codecov.io/gh/StanfordSpezi/spezi-web-template-application/graph/badge.svg?token=PsKyNz7Woe)](https://codecov.io/gh/StanfordSpezi/spezi-web-template-application)
 
 Template repository for a web React application
