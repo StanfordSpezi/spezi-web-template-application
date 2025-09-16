@@ -26,8 +26,10 @@ import { Route as SignInIndexImport } from './routes/~sign-in/~index'
 import { Route as DashboardIndexImport } from './routes/~_dashboard/~index'
 import { Route as DashboardUsersInviteImport } from './routes/~_dashboard/~users/~invite'
 import { Route as DashboardUsersIdImport } from './routes/~_dashboard/~users/~$id'
+import { Route as DashboardQuestionnairesIdImport } from './routes/~_dashboard/~questionnaires/~$id'
 import { Route as DashboardPatientsInviteImport } from './routes/~_dashboard/~patients/~invite'
 import { Route as DashboardUsersIndexImport } from './routes/~_dashboard/~users/~index'
+import { Route as DashboardQuestionnairesIndexImport } from './routes/~_dashboard/~questionnaires/~index'
 import { Route as DashboardPatientsIndexImport } from './routes/~_dashboard/~patients/~index'
 import { Route as DashboardNotificationsIndexImport } from './routes/~_dashboard/~notifications/~index'
 import { Route as DashboardAdminIndexImport } from './routes/~_dashboard/~admin/~index'
@@ -64,6 +66,12 @@ const DashboardUsersIdRoute = DashboardUsersIdImport.update({
   getParentRoute: () => DashboardRoute,
 } as any)
 
+const DashboardQuestionnairesIdRoute = DashboardQuestionnairesIdImport.update({
+  id: '/questionnaires/$id',
+  path: '/questionnaires/$id',
+  getParentRoute: () => DashboardRoute,
+} as any)
+
 const DashboardPatientsInviteRoute = DashboardPatientsInviteImport.update({
   id: '/patients/invite',
   path: '/patients/invite',
@@ -75,6 +83,13 @@ const DashboardUsersIndexRoute = DashboardUsersIndexImport.update({
   path: '/users/',
   getParentRoute: () => DashboardRoute,
 } as any)
+
+const DashboardQuestionnairesIndexRoute =
+  DashboardQuestionnairesIndexImport.update({
+    id: '/questionnaires/',
+    path: '/questionnaires/',
+    getParentRoute: () => DashboardRoute,
+  } as any)
 
 const DashboardPatientsIndexRoute = DashboardPatientsIndexImport.update({
   id: '/patients/',
@@ -147,6 +162,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardPatientsIndexImport
       parentRoute: typeof DashboardImport
     }
+    '/_dashboard/questionnaires/': {
+      id: '/_dashboard/questionnaires/'
+      path: '/questionnaires'
+      fullPath: '/questionnaires'
+      preLoaderRoute: typeof DashboardQuestionnairesIndexImport
+      parentRoute: typeof DashboardImport
+    }
     '/_dashboard/users/': {
       id: '/_dashboard/users/'
       path: '/users'
@@ -159,6 +181,13 @@ declare module '@tanstack/react-router' {
       path: '/patients/invite'
       fullPath: '/patients/invite'
       preLoaderRoute: typeof DashboardPatientsInviteImport
+      parentRoute: typeof DashboardImport
+    }
+    '/_dashboard/questionnaires/$id': {
+      id: '/_dashboard/questionnaires/$id'
+      path: '/questionnaires/$id'
+      fullPath: '/questionnaires/$id'
+      preLoaderRoute: typeof DashboardQuestionnairesIdImport
       parentRoute: typeof DashboardImport
     }
     '/_dashboard/users/$id': {
@@ -192,8 +221,10 @@ interface DashboardRouteChildren {
   DashboardAdminIndexRoute: typeof DashboardAdminIndexRoute
   DashboardNotificationsIndexRoute: typeof DashboardNotificationsIndexRoute
   DashboardPatientsIndexRoute: typeof DashboardPatientsIndexRoute
+  DashboardQuestionnairesIndexRoute: typeof DashboardQuestionnairesIndexRoute
   DashboardUsersIndexRoute: typeof DashboardUsersIndexRoute
   DashboardPatientsInviteRoute: typeof DashboardPatientsInviteRoute
+  DashboardQuestionnairesIdRoute: typeof DashboardQuestionnairesIdRoute
   DashboardUsersIdRoute: typeof DashboardUsersIdRoute
   DashboardUsersInviteRoute: typeof DashboardUsersInviteRoute
   DashboardPatientsIdIndexRoute: typeof DashboardPatientsIdIndexRoute
@@ -204,8 +235,10 @@ const DashboardRouteChildren: DashboardRouteChildren = {
   DashboardAdminIndexRoute: DashboardAdminIndexRoute,
   DashboardNotificationsIndexRoute: DashboardNotificationsIndexRoute,
   DashboardPatientsIndexRoute: DashboardPatientsIndexRoute,
+  DashboardQuestionnairesIndexRoute: DashboardQuestionnairesIndexRoute,
   DashboardUsersIndexRoute: DashboardUsersIndexRoute,
   DashboardPatientsInviteRoute: DashboardPatientsInviteRoute,
+  DashboardQuestionnairesIdRoute: DashboardQuestionnairesIdRoute,
   DashboardUsersIdRoute: DashboardUsersIdRoute,
   DashboardUsersInviteRoute: DashboardUsersInviteRoute,
   DashboardPatientsIdIndexRoute: DashboardPatientsIdIndexRoute,
@@ -222,8 +255,10 @@ export interface FileRoutesByFullPath {
   '/admin': typeof DashboardAdminIndexRoute
   '/notifications': typeof DashboardNotificationsIndexRoute
   '/patients': typeof DashboardPatientsIndexRoute
+  '/questionnaires': typeof DashboardQuestionnairesIndexRoute
   '/users': typeof DashboardUsersIndexRoute
   '/patients/invite': typeof DashboardPatientsInviteRoute
+  '/questionnaires/$id': typeof DashboardQuestionnairesIdRoute
   '/users/$id': typeof DashboardUsersIdRoute
   '/users/invite': typeof DashboardUsersInviteRoute
   '/patients/$id': typeof DashboardPatientsIdIndexRoute
@@ -235,8 +270,10 @@ export interface FileRoutesByTo {
   '/admin': typeof DashboardAdminIndexRoute
   '/notifications': typeof DashboardNotificationsIndexRoute
   '/patients': typeof DashboardPatientsIndexRoute
+  '/questionnaires': typeof DashboardQuestionnairesIndexRoute
   '/users': typeof DashboardUsersIndexRoute
   '/patients/invite': typeof DashboardPatientsInviteRoute
+  '/questionnaires/$id': typeof DashboardQuestionnairesIdRoute
   '/users/$id': typeof DashboardUsersIdRoute
   '/users/invite': typeof DashboardUsersInviteRoute
   '/patients/$id': typeof DashboardPatientsIdIndexRoute
@@ -250,8 +287,10 @@ export interface FileRoutesById {
   '/_dashboard/admin/': typeof DashboardAdminIndexRoute
   '/_dashboard/notifications/': typeof DashboardNotificationsIndexRoute
   '/_dashboard/patients/': typeof DashboardPatientsIndexRoute
+  '/_dashboard/questionnaires/': typeof DashboardQuestionnairesIndexRoute
   '/_dashboard/users/': typeof DashboardUsersIndexRoute
   '/_dashboard/patients/invite': typeof DashboardPatientsInviteRoute
+  '/_dashboard/questionnaires/$id': typeof DashboardQuestionnairesIdRoute
   '/_dashboard/users/$id': typeof DashboardUsersIdRoute
   '/_dashboard/users/invite': typeof DashboardUsersInviteRoute
   '/_dashboard/patients/$id/': typeof DashboardPatientsIdIndexRoute
@@ -266,8 +305,10 @@ export interface FileRouteTypes {
     | '/admin'
     | '/notifications'
     | '/patients'
+    | '/questionnaires'
     | '/users'
     | '/patients/invite'
+    | '/questionnaires/$id'
     | '/users/$id'
     | '/users/invite'
     | '/patients/$id'
@@ -278,8 +319,10 @@ export interface FileRouteTypes {
     | '/admin'
     | '/notifications'
     | '/patients'
+    | '/questionnaires'
     | '/users'
     | '/patients/invite'
+    | '/questionnaires/$id'
     | '/users/$id'
     | '/users/invite'
     | '/patients/$id'
@@ -291,8 +334,10 @@ export interface FileRouteTypes {
     | '/_dashboard/admin/'
     | '/_dashboard/notifications/'
     | '/_dashboard/patients/'
+    | '/_dashboard/questionnaires/'
     | '/_dashboard/users/'
     | '/_dashboard/patients/invite'
+    | '/_dashboard/questionnaires/$id'
     | '/_dashboard/users/$id'
     | '/_dashboard/users/invite'
     | '/_dashboard/patients/$id/'
@@ -330,8 +375,10 @@ export const routeTree = rootRoute
         "/_dashboard/admin/",
         "/_dashboard/notifications/",
         "/_dashboard/patients/",
+        "/_dashboard/questionnaires/",
         "/_dashboard/users/",
         "/_dashboard/patients/invite",
+        "/_dashboard/questionnaires/$id",
         "/_dashboard/users/$id",
         "/_dashboard/users/invite",
         "/_dashboard/patients/$id/"
@@ -356,12 +403,20 @@ export const routeTree = rootRoute
       "filePath": "~_dashboard/~patients/~index.tsx",
       "parent": "/_dashboard"
     },
+    "/_dashboard/questionnaires/": {
+      "filePath": "~_dashboard/~questionnaires/~index.tsx",
+      "parent": "/_dashboard"
+    },
     "/_dashboard/users/": {
       "filePath": "~_dashboard/~users/~index.tsx",
       "parent": "/_dashboard"
     },
     "/_dashboard/patients/invite": {
       "filePath": "~_dashboard/~patients/~invite.tsx",
+      "parent": "/_dashboard"
+    },
+    "/_dashboard/questionnaires/$id": {
+      "filePath": "~_dashboard/~questionnaires/~$id.tsx",
       "parent": "/_dashboard"
     },
     "/_dashboard/users/$id": {

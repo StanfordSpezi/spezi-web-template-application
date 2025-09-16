@@ -9,7 +9,14 @@
 import { UserType } from "@stanfordbdhg/engagehf-models";
 import { MenuItem } from "@stanfordspezi/spezi-web-design-system/molecules/DashboardLayout";
 import { useLocation } from "@tanstack/react-router";
-import { Bell, Contact, Home, MonitorCog, Users } from "lucide-react";
+import {
+  Bell,
+  ClipboardList,
+  Contact,
+  Home,
+  MonitorCog,
+  Users,
+} from "lucide-react";
 import { useHasUnreadNotification } from "@/modules/notifications/queries";
 import { routes } from "@/modules/routes";
 
@@ -55,6 +62,13 @@ export const MenuLinks = ({ userType }: MenuLinksProps) => {
         label="Patients"
         icon={<Contact />}
       />
+      {isRole([UserType.admin, UserType.owner]) && (
+        <MenuItem
+          {...hrefProps(routes.questionnaires.index)}
+          label="Questionnaires"
+          icon={<ClipboardList />}
+        />
+      )}
       {isRole([UserType.admin]) && (
         <MenuItem
           {...hrefProps(routes.admin)}

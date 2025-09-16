@@ -24,5 +24,9 @@ export const routes = {
       `/patients/${resourceType === "invitation" ? "invitation-" : ""}${patientId}`,
     invite: "/patients/invite",
   },
+  questionnaires: {
+    index: "/questionnaires",
+    questionnaire: () => "/questionnaires/${id}",
+  },
   signIn: "/sign-in",
 } as const;
