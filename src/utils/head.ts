@@ -6,8 +6,4 @@
 // SPDX-License-Identifier: MIT
 //
 
-const {
-  getEslintReactConfig,
-} = require("@stanfordspezi/spezi-web-configurations");
-
-module.exports = getEslintReactConfig({ tsconfigRootDir: __dirname });
+export const getTitle = (title: string) => `${title} | Spezi Web Template`;
