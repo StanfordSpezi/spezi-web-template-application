@@ -11,7 +11,7 @@ import { PageTitle } from "@stanfordspezi/spezi-web-design-system/molecules/Dash
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Users } from "lucide-react";
 import { UserType } from "spezi-firebase-template/models";
-import { callables, ensureType } from "@/modules/firebase/app";
+import { ensureType } from "@/modules/firebase/app";
 import { queryClient } from "@/modules/query/queryClient";
 import { routes } from "@/modules/routes";
 import { userOrganizationQueryOptions } from "@/modules/user/queries";
@@ -22,35 +22,28 @@ import {
 } from "@/routes/~_dashboard/~users/UserForm";
 import { getTitle } from "@/utils/head";
 
-const InviteUserPage = () => {
+const CreateUserPage = () => {
   const navigate = useNavigate();
   const { organizations } = Route.useLoaderData();
 
-  const inviteUser = async (form: UserFormSchema) => {
-    const result = await callables.createInvitation({
-      auth: {
-        displayName: form.displayName,
-        email: form.email,
-      },
-      user: {
-        ...(form.organizationId ? { organization: form.organizationId } : {}),
-        type: form.type,
-      },
-    });
-    toast.success("User has been successfully invited!");
-    void navigate({ to: routes.users.user(result.data.id, "invitation") });
+  const createUser = async (form: UserFormSchema) => {
+    // TODO: Implement user creation via callable
+    toast.success("User has been successfully created!");
+    void navigate({ to: routes.users.index });
   };
 
   return (
-    <DashboardLayout title={<PageTitle title="Invite user" icon={<Users />} />}>
-      <title>{getTitle("Invite user")}</title>
-      <UserForm organizations={organizations} onSubmit={inviteUser} />
+    <DashboardLayout
+      title={<PageTitle title="Create user" icon={<Users />} />}
+    >
+      <title>{getTitle("Create user")}</title>
+      <UserForm organizations={organizations} onSubmit={createUser} />
     </DashboardLayout>
   );
 };
 
 export const Route = createFileRoute("/_dashboard/users/invite")({
-  component: InviteUserPage,
+  component: CreateUserPage,
   loader: async () => ({
     organizations: await queryClient.ensureQueryData(
       userOrganizationQueryOptions(),

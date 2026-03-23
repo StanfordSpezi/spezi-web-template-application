@@ -21,7 +21,8 @@ import {
   useForm,
 } from "@stanfordspezi/spezi-web-design-system/forms";
 import { type UserInfo } from "@stanfordspezi/spezi-web-design-system/modules/auth";
-import { UserType, type Organization } from "spezi-firebase-template/models";
+import { UserType } from "spezi-firebase-template/models";
+import { type Organization } from "@/modules/firebase/models";
 import { z } from "zod";
 import { type User } from "@/modules/firebase/models";
 import { useUser } from "@/modules/firebase/UserProvider";

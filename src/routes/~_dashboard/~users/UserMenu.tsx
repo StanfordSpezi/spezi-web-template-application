@@ -6,7 +6,6 @@
 // SPDX-License-Identifier: MIT
 //
 
-import { deleteDoc } from "@firebase/firestore";
 import { RowDropdownMenu } from "@stanfordspezi/spezi-web-design-system/components/DataTable";
 import { DropdownMenuItem } from "@stanfordspezi/spezi-web-design-system/components/DropdownMenu";
 import { getUserName } from "@stanfordspezi/spezi-web-design-system/modules/auth";
@@ -14,10 +13,9 @@ import { ConfirmDeleteDialog } from "@stanfordspezi/spezi-web-design-system/mole
 import { useOpenState } from "@stanfordspezi/spezi-web-design-system/utils/useOpenState";
 import { Link, useRouter } from "@tanstack/react-router";
 import { Pencil, Trash } from "lucide-react";
-import { callables, docRefs } from "@/modules/firebase/app";
+import { callables } from "@/modules/firebase/app";
 import { useUser } from "@/modules/firebase/UserProvider";
 import { routes } from "@/modules/routes";
-import { ToggleUserDisabled } from "@/modules/user/ToggleUserDisabled";
 import { type User } from "@/routes/~_dashboard/~users/~index";
 
 interface UserMenuProps {
@@ -30,11 +28,7 @@ export const UserMenu = ({ user }: UserMenuProps) => {
   const deleteConfirm = useOpenState();
 
   const handleDelete = async () => {
-    if (user.resourceType === "user") {
-      await callables.deleteUser({ userId: user.resourceId });
-    } else {
-      await deleteDoc(docRefs.invitation(user.resourceId));
-    }
+    await callables.deleteUser({ userId: user.resourceId });
     deleteConfirm.close();
     void router.invalidate();
   };
@@ -46,13 +40,13 @@ export const UserMenu = ({ user }: UserMenuProps) => {
       <ConfirmDeleteDialog
         open={deleteConfirm.isOpen}
         onOpenChange={deleteConfirm.setIsOpen}
-        entityName={user.resourceType}
+        entityName="user"
         itemName={getUserName(user)}
         onDelete={handleDelete}
       />
       <RowDropdownMenu>
         <DropdownMenuItem asChild>
-          <Link to={routes.users.user(user.resourceId, user.resourceType)}>
+          <Link to={routes.users.user(user.resourceId)}>
             <Pencil />
             Edit
           </Link>
@@ -61,7 +55,6 @@ export const UserMenu = ({ user }: UserMenuProps) => {
           <Trash />
           Delete
         </DropdownMenuItem>
-        <ToggleUserDisabled user={user} />
       </RowDropdownMenu>
     </>
   );

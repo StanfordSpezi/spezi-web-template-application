@@ -7,13 +7,11 @@
 //
 
 import { CopyText } from "@stanfordspezi/spezi-web-design-system/components/CopyText";
-import { Tooltip } from "@stanfordspezi/spezi-web-design-system/components/Tooltip";
 import { type Nil } from "@stanfordspezi/spezi-web-design-system/utils/misc";
 import { createColumnHelper } from "@tanstack/table-core";
-import { Mail, ShieldX } from "lucide-react";
+import { ShieldX } from "lucide-react";
 
 export interface SharedUser {
-  resourceType: "invitation" | "user";
   resourceId: string;
   displayName: Nil<string>;
   email: Nil<string>;
@@ -28,28 +26,15 @@ export const userColumnIds = {
 export const createSharedUserColumns = <User extends SharedUser>() => {
   const columnHelper = createColumnHelper<User>();
   return {
-    id: columnHelper.accessor(
-      (user) =>
-        user.resourceType === "invitation" ? "invitation" : user.resourceId,
-      {
-        header: "Id",
-        cell: (props) => {
-          const user = props.row.original;
-          return (
-            user.resourceType === "invitation" ?
-              <Tooltip tooltip="User hasn't logged in yet">
-                <div className="flex items-center gap-2">
-                  <Mail className="text-muted-foreground size-5" />
-                  Invitation
-                </div>
-              </Tooltip>
-            : user.resourceId ?
-              <CopyText className="max-w-[7rem]">{user.resourceId}</CopyText>
-            : "-"
-          );
-        },
+    id: columnHelper.accessor((user) => user.resourceId, {
+      header: "Id",
+      cell: (props) => {
+        const user = props.row.original;
+        return user.resourceId ?
+            <CopyText className="max-w-[7rem]">{user.resourceId}</CopyText>
+          : "-";
       },
-    ),
+    }),
     displayName: columnHelper.accessor((user) => user.displayName, {
       header: "Name",
       cell: (props) => props.getValue() ?? "-",

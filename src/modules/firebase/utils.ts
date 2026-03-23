@@ -7,7 +7,6 @@
 //
 
 import { type Functions, httpsCallable } from "@firebase/functions";
-import { strategy } from "@stanfordspezi/spezi-web-design-system/utils/misc";
 import {
   collection,
   type CollectionReference,
@@ -21,41 +20,28 @@ import {
 import {
   type DeleteUserInput,
   type DeleteUserOutput,
-  type DismissMessageInput,
-  type DismissMessageOutput,
+  type DismissMessagesInput,
+  type DismissMessagesOutput,
   type GetUsersInformationInput,
   type GetUsersInformationOutput,
   type UpdateUserInformationInput,
   type UpdateUserInformationOutput,
 } from "spezi-firebase-template/models";
-import { type User, type UserMessage } from "@/modules/firebase/models";
+import {
+  type Organization,
+  type User,
+  type UserMessage,
+} from "@/modules/firebase/models";
 
 export const collectionNames = {
-  invitations: "invitations",
   users: "users",
   organizations: "organizations",
   messages: "messages",
 };
 
-export type ResourceType = "invitation" | "user";
-
-export const userPath = (resourceType: ResourceType) =>
-  strategy(
-    {
-      invitation: collectionNames.invitations,
-      user: collectionNames.users,
-    },
-    resourceType,
-  );
-
 export const getCollectionRefs = (db: Firestore) => ({
   users: () =>
     collection(db, collectionNames.users) as CollectionReference<User>,
-  invitations: () =>
-    collection(
-      db,
-      collectionNames.invitations,
-    ) as CollectionReference<Invitation>,
   organizations: () =>
     collection(
       db,
@@ -73,11 +59,6 @@ export const getDocumentsRefs = (db: Firestore) => ({
     doc(db, collectionNames.users, ...segments) as DocumentReference<
       User,
       User
-    >,
-  invitation: (...segments: string[]) =>
-    doc(db, collectionNames.invitations, ...segments) as DocumentReference<
-      Invitation,
-      Invitation
     >,
   organization: (...segments: string[]) =>
     doc(
@@ -112,10 +93,6 @@ export const getCallables = (functions: Functions) => ({
     UpdateUserInformationInput,
     UpdateUserInformationOutput
   >(functions, "updateUserInformation"),
-  dismissMessage: httpsCallable<DismissMessageInput, DismissMessageOutput>(
-    functions,
-    "dismissMessage",
-  ),
   dismissMessages: httpsCallable<DismissMessagesInput, DismissMessagesOutput>(
     functions,
     "dismissMessages",

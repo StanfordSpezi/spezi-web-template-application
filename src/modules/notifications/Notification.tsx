@@ -15,7 +15,6 @@ import {
   parseNilLocalizedText,
 } from "@/modules/firebase/localizedText";
 import { type UserMessage } from "@/modules/firebase/models";
-import { useUser } from "@/modules/firebase/UserProvider";
 import {
   isMessageRead,
   parseMessageToLink,
@@ -27,13 +26,11 @@ interface NotificationProps {
 }
 
 export const Notification = ({ notification }: NotificationProps) => {
-  const { auth } = useUser();
   const { invalidateUserNotifications } = useNotificationActions();
   const markNotificationAsRead = useMutation({
     mutationFn: () =>
-      callables.dismissMessage({
-        userId: auth.uid,
-        messageId: notification.id,
+      callables.dismissMessages({
+        messageIds: [notification.id],
       }),
     onSuccess: invalidateUserNotifications,
   });

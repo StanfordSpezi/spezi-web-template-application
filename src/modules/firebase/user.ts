@@ -7,11 +7,15 @@
 //
 
 import { chunk } from "es-toolkit";
-import {
-  type GetUsersInformationInput,
-  type UserInformation,
-} from "spezi-firebase-template/models";
+import { type GetUsersInformationInput } from "spezi-firebase-template/models";
 import { callables } from "@/modules/firebase/app";
+
+import { type UserAuthenticationInformation } from "@/modules/firebase/utils";
+
+interface UserInformation {
+  auth: UserAuthenticationInformation;
+  user?: Record<string, unknown>;
+}
 
 export const mapAuthData = async <T>(
   input: GetUsersInformationInput,
@@ -37,7 +41,8 @@ export const mapAuthData = async <T>(
         });
         return null;
       }
-      return callback(userData, id);
+      // Auth data comes as Record<string, unknown> from the callable but contains UserAuthenticationInformation fields
+      return callback(userData as unknown as UserInformation, id);
     });
   });
   const results = await Promise.all(promises);

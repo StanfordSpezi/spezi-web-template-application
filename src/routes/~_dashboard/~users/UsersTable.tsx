@@ -63,7 +63,7 @@ export const UsersTable = (props: UsersDataTableProps) => {
       tableView={{
         onRowClick: (user, event) =>
           void navigateOrOpen(event, {
-            to: routes.users.user(user.resourceId, user.resourceType),
+            to: routes.users.user(user.resourceId),
           }),
       }}
       {...props}

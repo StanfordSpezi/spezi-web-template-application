@@ -19,62 +19,38 @@ import { routes } from "@/modules/routes";
 import {
   getUserOrganizationsMap,
   parseAuthToUser,
-  parseInvitationToUser,
 } from "@/modules/user/queries";
 import { getTitle } from "@/utils/head";
 import { UsersTable } from "./UsersTable";
 import { DashboardLayout } from "../DashboardLayout";
 
-const getAdminData = () => ({
-  usersQuery: refs.users(),
-  invitationsQuery: refs.invitations(),
-});
-
-const getOwnerData = async () => {
-  const { user } = await getCurrentUser();
-
-  if (!user.organization) throw new Error("User without organization");
-  return {
-    usersQuery: query(
-      refs.users(),
-      where("organization", "==", user.organization),
-    ),
-    invitationsQuery: query(
-      refs.invitations(),
-      where("user.organization", "==", user.organization),
-    ),
-  };
-};
-
 const listUsers = async () => {
   const { user } = await getCurrentUser();
-  const { usersQuery, invitationsQuery } =
-    user.type === UserType.admin ? getAdminData() : await getOwnerData();
-
   const organizationMap = await getUserOrganizationsMap();
-  const invitations = await getDocsData(
-    query(invitationsQuery, where("user.type", "!=", UserType.patient)),
-  );
-  const usersData = await getDocsData(
-    query(usersQuery, where("type", "!=", UserType.patient)),
-  );
-  const userIds = usersData.map((user) => user.id);
 
-  const users = await mapAuthData(
+  let usersQuery = query(
+    refs.users(),
+    where("type", "!=", UserType.patient),
+  );
+  if (user.type !== UserType.admin && user.organization) {
+    usersQuery = query(
+      usersQuery,
+      where("organization", "==", user.organization),
+    );
+  }
+
+  const usersData = await getDocsData(usersQuery);
+  const userIds = usersData.map((u) => u.id);
+
+  return mapAuthData(
     { userIds, includeUserData: true },
     ({ auth, user }, id) => ({
       ...parseAuthToUser(id, auth),
-      disabled: user?.disabled,
-      organization: organizationMap.get(user?.organization ?? ""),
-      type: user?.type,
+      disabled: user?.disabled as boolean | undefined,
+      organization: organizationMap.get((user?.organization as string) ?? ""),
+      type: user?.type as UserType | undefined,
     }),
   );
-
-  const invitedUsers = invitations.map((invitation) =>
-    parseInvitationToUser(invitation, organizationMap),
-  );
-
-  return [...invitedUsers, ...users];
 };
 
 export type User = Awaited<ReturnType<typeof listUsers>>[number];
@@ -88,7 +64,7 @@ const UsersPage = () => {
         <Button asChild>
           <Link to={routes.users.invite}>
             <UserPlus />
-            Invite User
+            Create User
           </Link>
         </Button>
       }

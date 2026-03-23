@@ -15,7 +15,6 @@ import { Users } from "lucide-react";
 import { UserType } from "spezi-firebase-template/models";
 import { NotFound } from "@/components/NotFound";
 import { callables, docRefs, ensureType } from "@/modules/firebase/app";
-import { getDocDataOrThrow } from "@/modules/firebase/utils";
 import { queryClient } from "@/modules/query/queryClient";
 import { routes } from "@/modules/routes";
 import {
@@ -32,40 +31,22 @@ import { DashboardLayout } from "../DashboardLayout";
 
 const UserPage = () => {
   const router = useRouter();
-  const { authUser, user, resourceType, organizations, userId } =
-    Route.useLoaderData();
+  const { authUser, user, organizations, userId } = Route.useLoaderData();
 
   const updateUser = async (form: UserFormSchema) => {
-    const authData = {
-      displayName: form.displayName,
-      email: form.email,
-    };
-    const userData = {
-      organization: form.organizationId,
-      type: form.type,
-    };
-    if (resourceType === "user") {
-      await callables.updateUserInformation({
-        userId,
-        data: {
-          auth: authData,
-        },
-      });
-      await updateDoc(docRefs.user(userId), userData);
-    } else {
-      const invitation = await getDocDataOrThrow(docRefs.invitation(userId));
-      await updateDoc(docRefs.invitation(userId), {
-        code: form.email,
+    await callables.updateUserInformation({
+      userId,
+      data: {
         auth: {
-          ...invitation.auth,
-          ...authData,
+          displayName: form.displayName,
+          email: form.email,
         },
-        user: {
-          ...invitation.user,
-          ...userData,
-        },
-      });
-    }
+      },
+    });
+    await updateDoc(docRefs.user(userId), {
+      organization: form.organizationId ?? undefined,
+      type: form.type,
+    });
     toast.success("User has been successfully updated!");
     await router.invalidate();
   };
@@ -99,8 +80,8 @@ export const Route = createFileRoute("/_dashboard/users/$id")({
     />
   ),
   loader: async ({ params }) => {
-    const { resourceType, userId } = parseUserId(params.id);
-    const userData = await getUserData(userId, resourceType, [
+    const { userId } = parseUserId(params.id);
+    const userData = await getUserData(userId, [
       UserType.clinician,
       UserType.admin,
       UserType.owner,
@@ -112,7 +93,6 @@ export const Route = createFileRoute("/_dashboard/users/$id")({
       user,
       userId,
       authUser,
-      resourceType,
       organizations: await queryClient.ensureQueryData(
         userOrganizationQueryOptions(),
       ),

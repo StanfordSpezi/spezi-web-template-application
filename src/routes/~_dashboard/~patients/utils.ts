@@ -6,8 +6,8 @@
 // SPDX-License-Identifier: MIT
 //
 
+import { type DateInput } from "@stanfordspezi/spezi-web-design-system/utils/date";
 import { type Nil } from "@stanfordspezi/spezi-web-design-system/utils/misc";
-import { limit, orderBy, query, where } from "firebase/firestore";
 import { UserType } from "spezi-firebase-template/models";
 import { getCurrentUser, refs } from "@/modules/firebase/app";
 import { mapAuthData } from "@/modules/firebase/user";
@@ -20,19 +20,16 @@ import {
 
 const getUserClinicians = async () => {
   const { user } = await getCurrentUser();
-  let usersQuery = query(
-    refs.users(),
-    where("type", "in", [UserType.clinician, UserType.owner]),
-  );
-  if (user.type === UserType.owner || user.type === UserType.clinician) {
-    usersQuery = query(
-      usersQuery,
-      where("organization", "==", user.organization),
-    );
-  }
+  const usersQuery = refs.users();
   const users = await getDocsData(usersQuery);
+  const clinicians = users.filter(
+    (u) =>
+      (u.type === UserType.clinician || u.type === UserType.owner) &&
+      (user.type === UserType.admin ||
+        u.organization === user.organization),
+  );
   return mapAuthData(
-    { userIds: users.map((user) => user.id) },
+    { userIds: clinicians.map((u) => u.id) },
     ({ auth }, id) => ({
       id,
       displayName: auth.displayName,
@@ -48,27 +45,18 @@ export const getFormProps = async () => ({
   ),
 });
 
+export interface PatientInfoData {
+  email: string | null;
+  lastActiveDate: Nil<DateInput>;
+}
+
 export const getPatientInfo = async ({
   user,
-  resourceType,
   authUser,
-}: UserData) => {
-  const latestQuestionnaires = await getDocsData(
-    query(
-      refs.questionnaireResponses({ resourceType, userId: authUser.uid }),
-      orderBy("authored", "desc"),
-      limit(1),
-    ),
-  );
-  return {
-    email: authUser.email,
-    lastActiveDate: user.lastActiveDate,
-    latestQuestionnaireDate: latestQuestionnaires.at(0)?.authored,
-    invitationCode: user.invitationCode,
-    isInvitation: resourceType === "invitation",
-    selfManaged: user.selfManaged,
-  };
-};
+}: UserData): Promise<PatientInfoData> => ({
+  email: authUser.email,
+  lastActiveDate: user.lastActiveDate,
+});
 
 /**
  * Transforms a Date object into a string formatted as YYYY-MM-DD, without timezone offset.

@@ -12,7 +12,6 @@ import {
 } from "@stanfordspezi/spezi-web-design-system/components/DataTable";
 import { type RequiredSome } from "@stanfordspezi/spezi-web-design-system/utils/misc";
 import { createColumnHelper } from "@tanstack/table-core";
-import { Check } from "lucide-react";
 import { useMemo } from "react";
 import { UserType } from "spezi-firebase-template/models";
 import { useUser } from "@/modules/firebase/UserProvider";
@@ -30,13 +29,6 @@ const columns = [
   userColumns.email,
   userColumns.organization,
   userColumns.disabled,
-  columnHelper.accessor("selfManaged", {
-    header: "Self Managed",
-    cell: (props) => {
-      const selfManaged = props.getValue();
-      return selfManaged ? <Check className="size-5" /> : "";
-    },
-  }),
   columnHelper.display({
     id: "actions",
     cell: (props) => <PatientMenu patient={props.row.original} />,
@@ -64,10 +56,7 @@ export const PatientsTable = ({ data, ...props }: PatientsDataTableProps) => {
       tableView={{
         onRowClick: (patient, event) =>
           void navigateOrOpen(event, {
-            to: routes.patients.patient(
-              patient.resourceId,
-              patient.resourceType,
-            ),
+            to: routes.patients.patient(patient.resourceId),
           }),
       }}
       {...props}

@@ -6,48 +6,24 @@
 // SPDX-License-Identifier: MIT
 //
 
-import { UserType } from "@stanfordbdhg/engagehf-models";
 import { queryOptions } from "@tanstack/react-query";
-import { query, where } from "firebase/firestore";
+import { UserType } from "spezi-firebase-template/models";
 import { docRefs, getCurrentUser, refs } from "@/modules/firebase/app";
-import { type Invitation, type Organization } from "@/modules/firebase/models";
+import { type Organization } from "@/modules/firebase/models";
 import { mapAuthData } from "@/modules/firebase/user";
 import {
   getDocData,
   getDocDataOrThrow,
   getDocsData,
-  type ResourceType,
   type UserAuthenticationInformation,
 } from "@/modules/firebase/utils";
 import { queryClient } from "@/modules/query/queryClient";
-
-export const getNonAdminInvitationsQuery = (organizationIds: string[]) =>
-  query(
-    refs.invitations(),
-    where("user.organization", "in", organizationIds),
-    where("user.type", "!=", UserType.admin),
-  );
-
-export const parseInvitationToUser = (
-  invitation: Invitation & { id: string },
-  organizationMap: Map<string, Organization>,
-) => ({
-  resourceId: invitation.id,
-  resourceType: "invitation" as const,
-  email: invitation.auth?.email,
-  displayName: invitation.auth?.displayName,
-  organization: organizationMap.get(invitation.user.organization ?? ""),
-  type: invitation.user.type,
-  disabled: invitation.user.disabled,
-  selfManaged: invitation.user.selfManaged,
-});
 
 export const parseAuthToUser = (
   id: string,
   auth: UserAuthenticationInformation,
 ) => ({
   resourceId: id,
-  resourceType: "user" as const,
   uid: id,
   email: auth.email,
   displayName: auth.displayName,
@@ -90,52 +66,16 @@ const getUserAuthData = async (userId: string) => {
   }));
   const authUser = allAuthData.at(0);
   if (!authUser || !user) return null;
-  return { user, authUser, resourceType: "user" as const };
+  return { user, authUser };
 };
 
-const getUserInvitationData = async (userId: string) => {
-  const invitation = await getDocData(docRefs.invitation(userId));
-  if (!invitation) return null;
-  if (!invitation.auth) throw new Error("Incomplete data");
-  return {
-    user: {
-      ...invitation.user,
-      invitationCode: invitation.code,
-      lastActiveDate: null,
-    },
-    authUser: {
-      uid: userId,
-      email: invitation.auth.email,
-      displayName: invitation.auth.displayName,
-    },
-    resourceType: "invitation" as const,
-  };
-};
-
-const invitationPrefix = "invitation-";
-
-/**
- * Gets user or invitation data
- * @param userId Starts with `invitation-` if user is an invitation.
- * It's necessary to prefix invitation id, because user id and invitation id are not guaranteed to be distinct
- * */
-export const parseUserId = (userId: string) =>
-  userId.startsWith(invitationPrefix) ?
-    {
-      userId: userId.slice(invitationPrefix.length),
-      resourceType: "invitation" as const,
-    }
-  : { userId, resourceType: "user" as const };
+export const parseUserId = (userId: string) => ({ userId });
 
 export const getUserData = async (
   userId: string,
-  resourceType: ResourceType,
   validUserTypes: UserType[],
 ) => {
-  const data =
-    resourceType === "invitation" ?
-      await getUserInvitationData(userId)
-    : await getUserAuthData(userId);
+  const data = await getUserAuthData(userId);
   return data && validUserTypes.includes(data.user.type) ? data : null;
 };
 

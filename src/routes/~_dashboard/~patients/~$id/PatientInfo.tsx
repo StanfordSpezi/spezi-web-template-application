@@ -8,9 +8,9 @@
 
 import { Card } from "@stanfordspezi/spezi-web-design-system/components/Card";
 import { formatNilDateTime } from "@stanfordspezi/spezi-web-design-system/utils/date";
-import { Clock, FileQuestion, Mail, BookLock, FileInput } from "lucide-react";
+import { Clock, Mail } from "lucide-react";
 import { type ReactNode } from "react";
-import { type PatientInfo as PatientInfoData } from "@/routes/~_dashboard/~patients/utils";
+import { type PatientInfoData } from "@/routes/~_dashboard/~patients/utils";
 
 interface InfoRowProps {
   icon?: ReactNode;
@@ -37,36 +37,14 @@ export const PatientInfo = ({ info }: PatientInfoProps) => (
     <div className="px-5 py-4">
       <ul className="flex flex-col gap-4">
         <InfoRow
-          icon={<BookLock className="size-5" />}
-          label="Invitation code"
-          value={info.invitationCode}
+          icon={<Mail className="size-5" />}
+          label="Email"
+          value={info.email ?? "no email"}
         />
-        {info.isInvitation && (
-          <InfoRow
-            icon={<Mail className="size-5" />}
-            label="Invitation"
-            value="patient has not yet logged in"
-          />
-        )}
-        {info.selfManaged && (
-          <InfoRow
-            icon={<FileInput className="size-5" />}
-            label="Self managed"
-            value="inputs data themselves"
-          />
-        )}
         <InfoRow
           icon={<Clock className="size-5" />}
           label="Latest activity"
           value={formatNilDateTime(info.lastActiveDate) ?? "no activity"}
-        />
-        <InfoRow
-          icon={<FileQuestion className="size-5" />}
-          label="Latest questionnaire answer"
-          value={
-            formatNilDateTime(info.latestQuestionnaireDate) ??
-            "no questionnaire answered"
-          }
         />
       </ul>
     </div>

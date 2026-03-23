@@ -12,7 +12,6 @@ import { useMutation } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { callables } from "@/modules/firebase/app";
 import { type UserMessage } from "@/modules/firebase/models";
-import { useUser } from "@/modules/firebase/UserProvider";
 import { isMessageRead } from "@/modules/notifications/helpers";
 import { useNotificationActions } from "@/modules/notifications/queries";
 
@@ -23,7 +22,6 @@ interface MarkAllAsReadButtonProps {
 export const MarkAllAsReadButton = ({
   notifications,
 }: MarkAllAsReadButtonProps) => {
-  const { auth } = useUser();
   const { invalidateUserNotifications } = useNotificationActions();
 
   const dismissibleNotifications = useMemo(
@@ -39,8 +37,6 @@ export const MarkAllAsReadButton = ({
   const markNotificationsAsRead = useMutation({
     mutationFn: () =>
       callables.dismissMessages({
-        userId: auth.uid,
-        didPerformAction: false,
         messageIds: dismissibleNotifications.map(
           (notification) => notification.id,
         ),

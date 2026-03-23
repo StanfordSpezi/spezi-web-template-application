@@ -11,6 +11,7 @@ import {
   type userAuthConverter,
   type userMessageConverter,
   type localizedTextConverter,
+  type organizationConverter,
 } from "spezi-firebase-template/models";
 
 type InferEncoded<T> =
@@ -23,6 +24,10 @@ export type User = InferEncoded<typeof userConverter> & { id: string };
 export type UserAuth = InferEncoded<typeof userAuthConverter>;
 
 export type UserMessage = InferEncoded<typeof userMessageConverter> & {
+  id: string;
+};
+
+export type Organization = InferEncoded<typeof organizationConverter> & {
   id: string;
 };
 

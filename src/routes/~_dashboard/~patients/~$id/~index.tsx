@@ -30,7 +30,6 @@ import {
   type PatientFormSchema,
 } from "@/routes/~_dashboard/~patients/PatientForm";
 import {
-  formatBirthDate,
   getFormProps,
   getPatientInfo,
 } from "@/routes/~_dashboard/~patients/utils";
@@ -42,51 +41,28 @@ import { DashboardLayout } from "../../DashboardLayout";
 export enum PatientPageTab {
   information = "information",
   notifications = "notifications",
-  medications = "medications",
-  appointments = "appointments",
 }
 
 const PatientPage = () => {
   const router = useRouter();
   const { tab } = Route.useSearch();
-  const { userId, user, authUser, resourceType, info, formProps } =
-    Route.useLoaderData();
+  const { userId, user, authUser, info, formProps } = Route.useLoaderData();
 
   const updatePatient = async (form: PatientFormSchema) => {
     const clinician = await getDocDataOrThrow(docRefs.user(form.clinician));
-    const authData = {
-      displayName: form.displayName,
-    };
-    const userData = {
+    await callables.updateUserInformation({
+      userId,
+      data: {
+        auth: {
+          displayName: form.displayName,
+          email: form.email,
+        },
+      },
+    });
+    await updateDoc(docRefs.user(userId), {
       clinician: form.clinician,
       organization: clinician.organization,
-      dateOfBirth: formatBirthDate(form.dateOfBirth),
-      providerName: form.providerName,
-    };
-    if (resourceType === "user") {
-      await callables.updateUserInformation({
-        userId,
-        data: {
-          auth: {
-            ...authData,
-            email: form.email,
-          },
-        },
-      });
-      await updateDoc(docRefs.user(userId), userData);
-    } else {
-      const invitation = await getDocDataOrThrow(docRefs.invitation(userId));
-      await updateDoc(docRefs.invitation(userId), {
-        auth: {
-          ...invitation.auth,
-          ...authData,
-        },
-        user: {
-          ...invitation.user,
-          ...userData,
-        },
-      });
-    }
+    });
     toast.success("Patient has been successfully updated!");
     void router.invalidate();
   };
@@ -120,7 +96,6 @@ const PatientPage = () => {
               user={user}
               userInfo={authUser}
               onSubmit={updatePatient}
-              resourceType={resourceType}
               {...formProps}
             />
           </div>
@@ -145,10 +120,8 @@ export const Route = createFileRoute("/_dashboard/patients/$id/")({
     />
   ),
   loader: async ({ params }) => {
-    const { userId, resourceType } = parseUserId(params.id);
-    const userData = await getUserData(userId, resourceType, [
-      UserType.patient,
-    ]);
+    const { userId } = parseUserId(params.id);
+    const userData = await getUserData(userId, [UserType.patient]);
     if (!userData) throw notFound();
     const { user, authUser } = userData;
 
@@ -156,7 +129,6 @@ export const Route = createFileRoute("/_dashboard/patients/$id/")({
       user,
       userId,
       authUser,
-      resourceType,
       formProps: await getFormProps(),
       info: await getPatientInfo(userData),
     };

@@ -6,7 +6,6 @@
 // SPDX-License-Identifier: MIT
 //
 
-import { deleteDoc } from "@firebase/firestore";
 import { RowDropdownMenu } from "@stanfordspezi/spezi-web-design-system/components/DataTable";
 import { DropdownMenuItem } from "@stanfordspezi/spezi-web-design-system/components/DropdownMenu";
 import { getUserName } from "@stanfordspezi/spezi-web-design-system/modules/auth";
@@ -14,9 +13,8 @@ import { ConfirmDeleteDialog } from "@stanfordspezi/spezi-web-design-system/mole
 import { useOpenState } from "@stanfordspezi/spezi-web-design-system/utils/useOpenState";
 import { Link, useRouter } from "@tanstack/react-router";
 import { Pencil, Trash } from "lucide-react";
-import { callables, docRefs } from "@/modules/firebase/app";
+import { callables } from "@/modules/firebase/app";
 import { routes } from "@/modules/routes";
-import { ToggleUserDisabled } from "@/modules/user/ToggleUserDisabled";
 import { type Patient } from "@/routes/~_dashboard/~patients/~index";
 
 interface PatientMenuProps {
@@ -28,11 +26,7 @@ export const PatientMenu = ({ patient }: PatientMenuProps) => {
   const deleteConfirm = useOpenState();
 
   const handleDelete = async () => {
-    if (patient.resourceType === "user") {
-      await callables.deleteUser({ userId: patient.resourceId });
-    } else {
-      await deleteDoc(docRefs.invitation(patient.resourceId));
-    }
+    await callables.deleteUser({ userId: patient.resourceId });
     deleteConfirm.close();
     await router.invalidate();
   };
@@ -48,12 +42,7 @@ export const PatientMenu = ({ patient }: PatientMenuProps) => {
       />
       <RowDropdownMenu>
         <DropdownMenuItem asChild>
-          <Link
-            to={routes.patients.patient(
-              patient.resourceId,
-              patient.resourceType,
-            )}
-          >
+          <Link to={routes.patients.patient(patient.resourceId)}>
             <Pencil />
             Edit
           </Link>
@@ -62,7 +51,6 @@ export const PatientMenu = ({ patient }: PatientMenuProps) => {
           <Trash />
           Delete
         </DropdownMenuItem>
-        <ToggleUserDisabled user={patient} />
       </RowDropdownMenu>
     </>
   );

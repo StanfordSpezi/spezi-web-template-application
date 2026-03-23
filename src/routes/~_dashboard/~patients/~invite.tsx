@@ -20,45 +20,36 @@ import {
   PatientForm,
   type PatientFormSchema,
 } from "@/routes/~_dashboard/~patients/PatientForm";
-import {
-  formatBirthDate,
-  getFormProps,
-} from "@/routes/~_dashboard/~patients/utils";
+import { getFormProps } from "@/routes/~_dashboard/~patients/utils";
 import { getTitle } from "@/utils/head";
 
-const InvitePatientPage = () => {
+const CreatePatientPage = () => {
   const navigate = useNavigate();
   const { formProps } = Route.useLoaderData();
   const { auth, user } = useUser();
 
-  const invitePatient = async (form: PatientFormSchema) => {
+  const createPatient = async (form: PatientFormSchema) => {
     const clinician = await getDocDataOrThrow(docRefs.user(form.clinician));
-    const result = await callables.createInvitation({
-      auth: {
-        displayName: form.displayName,
-      },
-      user: {
-        type: UserType.patient,
-        clinician: form.clinician,
-        organization: clinician.organization,
-        dateOfBirth: formatBirthDate(form.dateOfBirth),
-        providerName: form.providerName,
-        selfManaged: form.selfManaged,
+    await callables.updateUserInformation({
+      userId: auth.uid,
+      data: {
+        auth: {
+          displayName: form.displayName,
+          email: form.email,
+        },
       },
     });
-    toast.success("Patient has been successfully invited!");
-    await navigate({
-      to: routes.patients.patient(result.data.id, "invitation"),
-    });
+    toast.success("Patient has been successfully created!");
+    await navigate({ to: routes.patients.index });
   };
 
   return (
     <DashboardLayout
-      title={<PageTitle title="Invite patient" icon={<Contact />} />}
+      title={<PageTitle title="Create patient" icon={<Contact />} />}
     >
-      <title>{getTitle("Invite patient")}</title>
+      <title>{getTitle("Create patient")}</title>
       <PatientForm
-        onSubmit={invitePatient}
+        onSubmit={createPatient}
         clinicianPreselectId={
           user.type === UserType.admin ? undefined : auth.uid
         }
@@ -69,6 +60,6 @@ const InvitePatientPage = () => {
 };
 
 export const Route = createFileRoute("/_dashboard/patients/invite")({
-  component: InvitePatientPage,
+  component: CreatePatientPage,
   loader: async () => ({ formProps: await getFormProps() }),
 });
