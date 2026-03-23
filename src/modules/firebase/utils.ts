@@ -18,6 +18,8 @@ import {
   type Query,
 } from "firebase/firestore";
 import {
+  type CreateUserInput,
+  type CreateUserOutput,
   type DeleteUserInput,
   type DeleteUserOutput,
   type DismissMessagesInput,
@@ -81,6 +83,10 @@ export interface UserAuthenticationInformation {
 }
 
 export const getCallables = (functions: Functions) => ({
+  createUser: httpsCallable<CreateUserInput, CreateUserOutput>(
+    functions,
+    "createUser",
+  ),
   getUsersInformation: httpsCallable<
     GetUsersInformationInput,
     GetUsersInformationOutput

@@ -13,8 +13,8 @@ export const isMessageRead = (message: UserMessage) => !!message.completedAt;
 export const filterUnreadNotifications = (messages: UserMessage[]) =>
   messages.filter((notification) => !isMessageRead(notification));
 
-export const parseMessageToLink = (_message: UserMessage): string | null =>
-  null;
+export const parseMessageToLink = (_message: UserMessage): string | undefined =>
+  undefined;
 
 export const getNotificationPatientId = (message: UserMessage) => {
   const action = message.action;

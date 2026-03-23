@@ -30,17 +30,19 @@ const CreatePatientPage = () => {
 
   const createPatient = async (form: PatientFormSchema) => {
     const clinician = await getDocDataOrThrow(docRefs.user(form.clinician));
-    await callables.updateUserInformation({
-      userId: auth.uid,
-      data: {
-        auth: {
-          displayName: form.displayName,
-          email: form.email,
-        },
+    const result = await callables.createUser({
+      auth: {
+        email: form.email ?? "",
+        displayName: form.displayName || undefined,
+      },
+      user: {
+        type: UserType.patient,
+        clinician: form.clinician,
+        organization: clinician.organization,
       },
     });
     toast.success("Patient has been successfully created!");
-    await navigate({ to: routes.patients.index });
+    await navigate({ to: routes.patients.patient(result.data.userId) });
   };
 
   return (

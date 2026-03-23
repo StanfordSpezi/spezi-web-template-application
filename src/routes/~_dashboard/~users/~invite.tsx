@@ -11,7 +11,7 @@ import { PageTitle } from "@stanfordspezi/spezi-web-design-system/molecules/Dash
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Users } from "lucide-react";
 import { UserType } from "spezi-firebase-template/models";
-import { ensureType } from "@/modules/firebase/app";
+import { callables, ensureType } from "@/modules/firebase/app";
 import { queryClient } from "@/modules/query/queryClient";
 import { routes } from "@/modules/routes";
 import { userOrganizationQueryOptions } from "@/modules/user/queries";
@@ -27,15 +27,22 @@ const CreateUserPage = () => {
   const { organizations } = Route.useLoaderData();
 
   const createUser = async (form: UserFormSchema) => {
-    // TODO: Implement user creation via callable
+    const result = await callables.createUser({
+      auth: {
+        email: form.email,
+        displayName: form.displayName || undefined,
+      },
+      user: {
+        type: form.type,
+        organization: form.organizationId ?? undefined,
+      },
+    });
     toast.success("User has been successfully created!");
-    void navigate({ to: routes.users.index });
+    void navigate({ to: routes.users.user(result.data.userId) });
   };
 
   return (
-    <DashboardLayout
-      title={<PageTitle title="Create user" icon={<Users />} />}
-    >
+    <DashboardLayout title={<PageTitle title="Create user" icon={<Users />} />}>
       <title>{getTitle("Create user")}</title>
       <UserForm organizations={organizations} onSubmit={createUser} />
     </DashboardLayout>
