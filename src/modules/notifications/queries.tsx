@@ -27,7 +27,7 @@ export const notificationQueries = {
         getDocsData(
           query(
             refs.userMessages({ userId: payload.userId }),
-            orderBy("creationDate", "desc"),
+            orderBy("createdAt", "desc"),
           ),
         ),
     }),

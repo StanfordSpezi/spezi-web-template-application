@@ -6,9 +6,9 @@
 // SPDX-License-Identifier: MIT
 //
 
-import { UserType } from "@stanfordbdhg/engagehf-models";
 import { type Nil } from "@stanfordspezi/spezi-web-design-system/utils/misc";
 import { limit, orderBy, query, where } from "firebase/firestore";
+import { UserType } from "spezi-firebase-template/models";
 import { getCurrentUser, refs } from "@/modules/firebase/app";
 import { mapAuthData } from "@/modules/firebase/user";
 import { getDocsData } from "@/modules/firebase/utils";

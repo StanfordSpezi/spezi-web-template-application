@@ -27,8 +27,8 @@ const columns = [
     (notification) => parseNilLocalizedText(notification.title),
     { id: "title" },
   ),
-  columnHelper.accessor((notification) => new Date(notification.creationDate), {
-    id: "creationDate",
+  columnHelper.accessor((notification) => new Date(notification.createdAt), {
+    id: "createdAt",
   }),
   columnHelper.accessor((notification) => isMessageRead(notification), {
     id: columnIds.isRead,

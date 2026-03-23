@@ -41,6 +41,7 @@
     "date-fns": "^4.1.0",
     "es-toolkit": "^1.45.1",
     "firebase": "^12.10.0",
+    "spezi-firebase-template": "file:../spezi-firebase-template",
     "lucide-react": "^0.577.0",
     "next-intl": "^4",
     "react": "^19",

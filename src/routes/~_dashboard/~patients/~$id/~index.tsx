@@ -7,7 +7,6 @@
 //
 
 import { updateDoc } from "@firebase/firestore";
-import { UserType } from "@stanfordbdhg/engagehf-models";
 import {
   Tabs,
   TabsContent,
@@ -19,6 +18,7 @@ import { getUserName } from "@stanfordspezi/spezi-web-design-system/modules/auth
 import { PageTitle } from "@stanfordspezi/spezi-web-design-system/molecules/DashboardLayout";
 import { createFileRoute, notFound, useRouter } from "@tanstack/react-router";
 import { Contact } from "lucide-react";
+import { UserType } from "spezi-firebase-template/models";
 import { z } from "zod";
 import { NotFound } from "@/components/NotFound";
 import { callables, docRefs } from "@/modules/firebase/app";

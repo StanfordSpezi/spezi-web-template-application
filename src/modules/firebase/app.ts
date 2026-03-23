@@ -8,12 +8,12 @@
 
 import { initializeApp } from "@firebase/app";
 import { connectFunctionsEmulator, getFunctions } from "@firebase/functions";
-import { type UserType } from "@stanfordbdhg/engagehf-models";
 import { toast } from "@stanfordspezi/spezi-web-design-system/components/Toaster";
 import { queryOptions } from "@tanstack/react-query";
 import { redirect } from "@tanstack/react-router";
 import { connectAuthEmulator, getAuth, OAuthProvider } from "firebase/auth";
 import { connectFirestoreEmulator, getFirestore } from "firebase/firestore";
+import { type UserType } from "spezi-firebase-template/models";
 import { env } from "@/env";
 import { firebaseConfig } from "@/modules/firebase/config";
 import {

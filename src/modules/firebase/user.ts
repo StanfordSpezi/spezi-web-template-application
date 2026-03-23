@@ -6,11 +6,11 @@
 // SPDX-License-Identifier: MIT
 //
 
+import { chunk } from "es-toolkit";
 import {
   type GetUsersInformationInput,
   type UserInformation,
-} from "@stanfordbdhg/engagehf-models";
-import { chunk } from "es-toolkit";
+} from "spezi-firebase-template/models";
 import { callables } from "@/modules/firebase/app";
 
 export const mapAuthData = async <T>(

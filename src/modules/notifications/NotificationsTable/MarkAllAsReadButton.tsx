@@ -30,7 +30,7 @@ export const MarkAllAsReadButton = ({
     () =>
       notifications.filter(
         (notification) =>
-          notification.isDismissible && !isMessageRead(notification),
+          !notification.isDismissed && !isMessageRead(notification),
       ),
     [notifications],
   );

@@ -10,7 +10,7 @@ import { type UserMessage } from "@/modules/firebase/models";
 import { routes } from "@/modules/routes";
 import { type PatientPageTab } from "@/routes/~_dashboard/~patients/~$id/~index";
 
-export const isMessageRead = (message: UserMessage) => !!message.completionDate;
+export const isMessageRead = (message: UserMessage) => !!message.completedAt;
 
 export const filterUnreadNotifications = (messages: UserMessage[]) =>
   messages.filter((notification) => !isMessageRead(notification));

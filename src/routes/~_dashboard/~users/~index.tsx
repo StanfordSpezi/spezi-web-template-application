@@ -6,12 +6,12 @@
 // SPDX-License-Identifier: MIT
 //
 
-import { UserType } from "@stanfordbdhg/engagehf-models";
 import { Button } from "@stanfordspezi/spezi-web-design-system/components/Button";
 import { PageTitle } from "@stanfordspezi/spezi-web-design-system/molecules/DashboardLayout";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { query, where } from "firebase/firestore";
 import { UserPlus, Users } from "lucide-react";
+import { UserType } from "spezi-firebase-template/models";
 import { ensureType, getCurrentUser, refs } from "@/modules/firebase/app";
 import { mapAuthData } from "@/modules/firebase/user";
 import { getDocsData } from "@/modules/firebase/utils";

@@ -45,11 +45,11 @@ export const Notification = ({ notification }: NotificationProps) => {
     <NotificationComponent
       title={parseLocalizedText(notification.title)}
       message={parseNilLocalizedText(notification.description)}
-      time={new Date(notification.creationDate)}
+      time={new Date(notification.createdAt)}
       link={link}
       isRead={isRead}
       actions={
-        notification.isDismissible && !isRead ?
+        !notification.isDismissed && !isRead ?
           <Button
             variant="link"
             size="xs"

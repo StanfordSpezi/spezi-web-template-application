@@ -6,7 +6,6 @@
 // SPDX-License-Identifier: MIT
 //
 
-import { UserType } from "@stanfordbdhg/engagehf-models";
 import {
   DataTable,
   type DataTableProps,
@@ -15,6 +14,7 @@ import { type RequiredSome } from "@stanfordspezi/spezi-web-design-system/utils/
 import { createColumnHelper } from "@tanstack/table-core";
 import { Check } from "lucide-react";
 import { useMemo } from "react";
+import { UserType } from "spezi-firebase-template/models";
 import { useUser } from "@/modules/firebase/UserProvider";
 import { routes } from "@/modules/routes";
 import { createSharedUserColumns, userColumnIds } from "@/modules/user/table";

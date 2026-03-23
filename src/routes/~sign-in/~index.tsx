@@ -13,15 +13,13 @@ import { AsideLayout } from "@/components/AsideLayout";
 import { env } from "@/env";
 import { auth, authProvider } from "@/modules/firebase/app";
 import { getTitle } from "@/utils/head";
-import johnsHopkingsLogoImg from "./johnsHopkinsLogo.png";
-import michiganLogoImg from "./michiganLogo.png";
 import stanfordLogoImg from "./stanfordLogo.png";
 
 const SignIn = () => (
   <AsideLayout>
     <title>{getTitle("Sign In")}</title>
     <AuthSignInForm
-      className="mx-auto w-[350px]"
+      className="mx-auto w-87.5"
       providers={[
         {
           name: "Stanford",
@@ -30,7 +28,7 @@ const SignIn = () => (
             <img
               src={stanfordLogoImg}
               alt="Stanford University logo"
-              className="w-[22px]"
+              className="w-5.5"
             />
           ),
         },
