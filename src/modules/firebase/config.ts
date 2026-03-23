@@ -6,7 +6,7 @@
 // SPDX-License-Identifier: MIT
 //
 
-import { env } from "../../env";
+import { env } from "@/env";
 
 export const firebaseConfig = {
   apiKey: env.VITE_PUBLIC_FIREBASE_API_KEY,

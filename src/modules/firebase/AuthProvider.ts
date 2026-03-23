@@ -16,8 +16,7 @@ interface AuthProviderProps {
   children: ReactNode;
 }
 
-export const isRouteProtected = (path: string) =>
-  path !== routes.signIn && !/\/patients\/.+\/healthSummary\//.exec(path);
+export const isRouteProtected = (path: string) => path !== routes.signIn;
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const navigate = useNavigate();
