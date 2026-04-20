@@ -12,6 +12,8 @@ import {
   type userMessageConverter,
   type localizedTextConverter,
   type organizationConverter,
+  type fhirObservationConverter,
+  type fhirQuestionnaireResponseConverter,
 } from "spezi-firebase-template/models";
 
 type InferEncoded<T> =
@@ -28,6 +30,15 @@ export type UserMessage = InferEncoded<typeof userMessageConverter> & {
 };
 
 export type Organization = InferEncoded<typeof organizationConverter> & {
+  id: string;
+};
+
+export type FhirObservation = InferEncoded<typeof fhirObservationConverter> & {
+  id: string;
+};
+export type FhirQuestionnaireResponse = InferEncoded<
+  typeof fhirQuestionnaireResponseConverter
+> & {
   id: string;
 };
 
