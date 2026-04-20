@@ -8,8 +8,9 @@
 
 /// <reference types="vitest" />
 /// <reference types="vite/client" />
+/// <reference types="vitest/config" />
 import path from "node:path";
-import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
+import { tanstackRouter } from "@tanstack/router-plugin/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 import { viteEnvs } from "vite-envs";
@@ -18,10 +19,10 @@ export default defineConfig({
   root: ".",
   plugins: [
     react(),
-    TanStackRouterVite({
+    tanstackRouter({
       routeFilePrefix: "~",
-      routesDirectory: "./routes",
-      generatedRouteTree: "./routeTree.gen.ts",
+      routesDirectory: "./src/routes",
+      generatedRouteTree: "./src/routeTree.gen.ts",
       routeTreeFileHeader: [
         `//
 // This source file is part of the Stanford Biodesign Digital Health Spezi Web Template Application open-source project
@@ -39,17 +40,17 @@ export default defineConfig({
     viteEnvs({
       declarationFile: path.resolve(__dirname, ".env.example"),
       ambientModuleDeclarationFilePath: ({ appRootDirPath }) =>
-        path.join(appRootDirPath, "vite-envs.d.ts"),
+        path.join(appRootDirPath, "src", "vite-envs.d.ts"),
     }),
   ],
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "."),
+      "@": path.resolve(__dirname, "src"),
     },
   },
   test: {
     globals: true,
     environment: "jsdom",
-    setupFiles: ["./testSetup.ts"],
+    setupFiles: ["./src/testSetup.ts"],
   },
 });

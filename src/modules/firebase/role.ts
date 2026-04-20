@@ -6,8 +6,7 @@
 // SPDX-License-Identifier: MIT
 //
 
-const {
-  getEslintReactConfig,
-} = require("@stanfordspezi/spezi-web-configurations");
+import { upperFirst } from "@stanfordspezi/spezi-web-design-system/utils/misc";
+import { type UserType } from "spezi-firebase-template/models";
 
-module.exports = getEslintReactConfig({ tsconfigRootDir: __dirname });
+export const stringifyType = (type: UserType) => upperFirst(type);

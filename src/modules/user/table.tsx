@@ -1,0 +1,57 @@
+//
+// This source file is part of the Stanford Biodesign Digital Health Spezi Web Template Application open-source project
+//
+// SPDX-FileCopyrightText: 2025 Stanford University and the project authors (see CONTRIBUTORS.md)
+//
+// SPDX-License-Identifier: MIT
+//
+
+import { CopyText } from "@stanfordspezi/spezi-web-design-system/components/CopyText";
+import { type Nil } from "@stanfordspezi/spezi-web-design-system/utils/misc";
+import { createColumnHelper } from "@tanstack/table-core";
+import { ShieldX } from "lucide-react";
+
+export interface SharedUser {
+  resourceId: string;
+  displayName: Nil<string>;
+  email: Nil<string>;
+  organization: Nil<{ name: string }>;
+  disabled: boolean | undefined;
+}
+
+export const userColumnIds = {
+  organization: "organization",
+};
+
+export const createSharedUserColumns = <User extends SharedUser>() => {
+  const columnHelper = createColumnHelper<User>();
+  return {
+    id: columnHelper.accessor((user) => user.resourceId, {
+      header: "Id",
+      cell: (props) => {
+        const user = props.row.original;
+        return user.resourceId ?
+            <CopyText className="max-w-[7rem]">{user.resourceId}</CopyText>
+          : "-";
+      },
+    }),
+    displayName: columnHelper.accessor((user) => user.displayName, {
+      header: "Name",
+      cell: (props) => props.getValue() ?? "-",
+    }),
+    email: columnHelper.accessor((user) => user.email, { header: "Email" }),
+    organization: columnHelper.accessor((user) => user.organization?.name, {
+      id: userColumnIds.organization,
+      header: "Organization",
+    }),
+    disabled: columnHelper.accessor((user) => user.disabled, {
+      header: "Disabled",
+      cell: (props) =>
+        props.row.original.disabled ?
+          <span className="flex items-center gap-2">
+            <ShieldX className="size-5" /> Disabled
+          </span>
+        : null,
+    }),
+  };
+};
