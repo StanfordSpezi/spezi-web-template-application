@@ -8,6 +8,7 @@
 
 import { type DateInput } from "@stanfordspezi/spezi-web-design-system/utils/date";
 import { type Nil } from "@stanfordspezi/spezi-web-design-system/utils/misc";
+import { query, where } from "firebase/firestore";
 import { UserType } from "spezi-firebase-template/models";
 import { getCurrentUser, refs } from "@/modules/firebase/app";
 import { mapAuthData } from "@/modules/firebase/user";
@@ -20,13 +21,16 @@ import {
 
 const getUserClinicians = async () => {
   const { user } = await getCurrentUser();
-  const usersQuery = refs.users();
-  const users = await getDocsData(usersQuery);
-  const clinicians = users.filter(
-    (u) =>
-      (u.type === UserType.clinician || u.type === UserType.owner) &&
-      (user.type === UserType.admin || u.organization === user.organization),
+  if (user.type !== UserType.admin && !user.organization) return [];
+  const baseQuery = query(
+    refs.users(),
+    where("type", "in", [UserType.clinician, UserType.owner]),
   );
+  const usersQuery =
+    user.type === UserType.admin ?
+      baseQuery
+    : query(baseQuery, where("organization", "==", user.organization));
+  const clinicians = await getDocsData(usersQuery);
   return mapAuthData(
     { userIds: clinicians.map((u) => u.id) },
     ({ auth }, id) => ({
