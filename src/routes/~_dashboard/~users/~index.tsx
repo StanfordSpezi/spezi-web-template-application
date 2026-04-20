@@ -28,10 +28,7 @@ const listUsers = async () => {
   const { user } = await getCurrentUser();
   const organizationMap = await getUserOrganizationsMap();
 
-  let usersQuery = query(
-    refs.users(),
-    where("type", "!=", UserType.patient),
-  );
+  let usersQuery = query(refs.users(), where("type", "!=", UserType.patient));
   if (user.type !== UserType.admin && user.organization) {
     usersQuery = query(
       usersQuery,
@@ -46,9 +43,9 @@ const listUsers = async () => {
     { userIds, includeUserData: true },
     ({ auth, user }, id) => ({
       ...parseAuthToUser(id, auth),
-      disabled: user?.disabled as boolean | undefined,
-      organization: organizationMap.get((user?.organization as string) ?? ""),
-      type: user?.type as UserType | undefined,
+      disabled: user?.disabled,
+      organization: organizationMap.get(user?.organization ?? ""),
+      type: user?.type,
     }),
   );
 };

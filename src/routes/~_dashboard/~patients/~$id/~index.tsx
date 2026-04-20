@@ -130,7 +130,7 @@ export const Route = createFileRoute("/_dashboard/patients/$id/")({
       userId,
       authUser,
       formProps: await getFormProps(),
-      info: await getPatientInfo(userData),
+      info: getPatientInfo(userData),
     };
   },
 });

@@ -13,16 +13,16 @@ import { query, where } from "firebase/firestore";
 import { Contact, UserPlus } from "lucide-react";
 import { UserType } from "spezi-firebase-template/models";
 import { getCurrentUser, refs } from "@/modules/firebase/app";
-import { routes } from "@/modules/routes";
-import { DashboardLayout } from "@/routes/~_dashboard/DashboardLayout";
-import { PatientsTable } from "@/routes/~_dashboard/~patients/PatientsTable";
-import { getTitle } from "@/utils/head";
 import { mapAuthData } from "@/modules/firebase/user";
 import { getDocsData } from "@/modules/firebase/utils";
+import { routes } from "@/modules/routes";
 import {
   getUserOrganizationsMap,
   parseAuthToUser,
 } from "@/modules/user/queries";
+import { DashboardLayout } from "@/routes/~_dashboard/DashboardLayout";
+import { PatientsTable } from "@/routes/~_dashboard/~patients/PatientsTable";
+import { getTitle } from "@/utils/head";
 
 const listPatients = async () => {
   const { user } = await getCurrentUser();
@@ -39,11 +39,14 @@ const listPatients = async () => {
   const patients = await getDocsData(usersQuery);
   const userIds = patients.map((patient) => patient.id);
 
-  return mapAuthData({ userIds, includeUserData: true }, ({ auth, user }, id) => ({
-    ...parseAuthToUser(id, auth),
-    organization: organizationMap.get((user?.organization as string) ?? ""),
-    disabled: user?.disabled as boolean | undefined,
-  }));
+  return mapAuthData(
+    { userIds, includeUserData: true },
+    ({ auth, user }, id) => ({
+      ...parseAuthToUser(id, auth),
+      organization: organizationMap.get(user?.organization ?? ""),
+      disabled: user?.disabled,
+    }),
+  );
 };
 
 export type Patient = Awaited<ReturnType<typeof listPatients>>[number];

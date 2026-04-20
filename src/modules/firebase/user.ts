@@ -9,12 +9,12 @@
 import { chunk } from "es-toolkit";
 import { type GetUsersInformationInput } from "spezi-firebase-template/models";
 import { callables } from "@/modules/firebase/app";
-
+import { type User } from "@/modules/firebase/models";
 import { type UserAuthenticationInformation } from "@/modules/firebase/utils";
 
 interface UserInformation {
   auth: UserAuthenticationInformation;
-  user?: Record<string, unknown>;
+  user?: User;
 }
 
 export const mapAuthData = async <T>(

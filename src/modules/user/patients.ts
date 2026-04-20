@@ -17,26 +17,6 @@ import {
   parseAuthToUser,
 } from "@/modules/user/queries";
 
-export const parsePatientsQuery = async () => {
-  const patients = await getDocsData(
-    query(refs.users(), where("type", "==", UserType.patient)),
-  );
-
-  const userIds = patients.map((patient) => patient.id);
-  const organizationMap = await getUserOrganizationsMap();
-
-  const patientsData = await mapAuthData(
-    { userIds, includeUserData: true },
-    ({ auth, user }, id) => ({
-      ...parseAuthToUser(id, auth),
-      organization: organizationMap.get(user?.organization as string ?? ""),
-      disabled: user?.disabled as boolean | undefined,
-    }),
-  );
-
-  return patientsData;
-};
-
 export const patientsQueries = {
   listUserPatients: () =>
     queryOptions({
@@ -62,8 +42,8 @@ export const patientsQueries = {
           { userIds, includeUserData: true },
           ({ auth, user }, id) => ({
             ...parseAuthToUser(id, auth),
-            organization: organizationMap.get(user?.organization as string ?? ""),
-            disabled: user?.disabled as boolean | undefined,
+            organization: organizationMap.get(user?.organization ?? ""),
+            disabled: user?.disabled,
           }),
         );
       },

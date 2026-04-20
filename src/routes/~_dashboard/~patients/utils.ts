@@ -25,8 +25,7 @@ const getUserClinicians = async () => {
   const clinicians = users.filter(
     (u) =>
       (u.type === UserType.clinician || u.type === UserType.owner) &&
-      (user.type === UserType.admin ||
-        u.organization === user.organization),
+      (user.type === UserType.admin || u.organization === user.organization),
   );
   return mapAuthData(
     { userIds: clinicians.map((u) => u.id) },
@@ -50,10 +49,10 @@ export interface PatientInfoData {
   lastActiveDate: Nil<DateInput>;
 }
 
-export const getPatientInfo = async ({
+export const getPatientInfo = ({
   user,
   authUser,
-}: UserData): Promise<PatientInfoData> => ({
+}: UserData): PatientInfoData => ({
   email: authUser.email,
   lastActiveDate: user.lastActiveDate,
 });

@@ -31,10 +31,10 @@ export const DashboardLayout = (props: DashboardLayoutProps) => {
         <>
           <Link
             to="/"
-            className="interactive-opacity flex-center w-full gap-4 px-2 pt-4 xl:px-8"
+            className="interactive-opacity flex-center w-full gap-3 px-2 pt-4 xl:px-8"
           >
             <Logo className="text-primary w-8" />
-            <LogoType className="hidden h-auto! w-full! xl:block" />
+            <LogoType className="hidden h-5 w-auto xl:block" />
           </Link>
           <nav className="mt-9 flex flex-col gap-1 xl:w-full">
             <MenuLinks />
